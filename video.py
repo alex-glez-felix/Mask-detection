@@ -49,7 +49,7 @@ prototxtPath = r"face_detector\deploy.prototxt"
 weightsPath = r"face_detector\res10_300x300_ssd_iter_140000.caffemodel"
 faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
-maskNet = load_model("mask_detector_v2.model")
+maskNet = load_model("mask_detector_v3.model")
 
 print("[INFO] starting video stream...")
 vs = VideoStream(src=0).start()
