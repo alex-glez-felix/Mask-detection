@@ -8,13 +8,12 @@ import imutils
 import cv2
 
 def detect_and_predict_mask(frame, faceNet, maskNet):
-    (h, w) = frame.shape[:2]
+    h, w = frame.shape[:2]
     blob = cv2.dnn.blobFromImage(frame, 1.0, (224, 224),
         (104.0, 177.0, 123.0))
 
     faceNet.setInput(blob)
     detections = faceNet.forward()
-    print(detections.shape)
 
     faces = []
     locs = []
@@ -25,10 +24,10 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 
         if confidence > 0.5:
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
-            (startX, startY, endX, endY) = box.astype("int")
+            startX, startY, endX, endY = box.astype("int")
 
-            (startX, startY) = (max(0, startX), max(0, startY))
-            (endX, endY) = (min(w - 1, endX), min(h - 1, endY))
+            startX, startY = (max(0, startX), max(0, startY))
+            endX, endY = (min(w - 1, endX), min(h - 1, endY))
 
             face = frame[startY:endY, startX:endX]
             face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
@@ -59,9 +58,9 @@ while True:
 
     locs, preds = detect_and_predict_mask(frame, faceNet, maskNet)
 
-    for (box, pred) in zip(locs, preds):
-        (startX, startY, endX, endY) = box
-        (mask, bad, withoutMask) = pred
+    for box, pred in zip(locs, preds):
+        startX, startY, endX, endY = box
+        mask, bad, withoutMask = pred
 
         if mask > bad and mask > withoutMask:
             label = "Mask"
